@@ -9,7 +9,6 @@ pub struct TableDisplay {
     pub x_terms: Vec<usize>,
     pub y_terms: Vec<usize>,
     pub hide_upper_triangle: bool,
-    pub display_base: usize,
 }
 
 impl Default for TableDisplay {
@@ -19,7 +18,6 @@ impl Default for TableDisplay {
             sign: Cow::Borrowed("×"),
             x_terms: vec![2, 4, 6, 8],
             y_terms: vec![1, 3, 5, 7, 9],
-            hide_upper_triangle: true,
         }
     }
 }
