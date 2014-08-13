@@ -1,6 +1,8 @@
 use std::borrow::Cow;
 use std::fmt::{Display, Formatter};
-use crate::table::{TableDisplay};
+use crate::table::{standard_alphabet, TableDisplay};
+
+mod display;
 
 #[derive(Copy, Clone, Debug)]
 pub struct OperationTable {
@@ -18,17 +20,9 @@ pub enum OperationKind {
     Multiplication,
 }
 
-
-impl Display for OperationTable {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let display = TableDisplay {
-            sign: Cow::Owned(self.kind.to_string()),
-            x_terms: (0..self.base).collect(),
-            y_terms: (0..self.base).collect(),
-            hide_upper_triangle: self.hide_upper_triangle,
-            display_base: self.base_display as usize,
-        };
-        Display::fmt(&display, f)
+impl Default for OperationTable {
+    fn default() -> Self {
+        Self { kind: OperationKind::default(), base: 10, base_display: 10, skip_one: true, hide_upper_triangle: true }
     }
 }
 
@@ -45,26 +39,11 @@ impl OperationTable {
     }
 }
 
-impl Default for OperationTable {
-    fn default() -> Self {
-        Self { kind: OperationKind::default(), base: 10, base_display: 10, skip_one: true, hide_upper_triangle: true }
-    }
-}
-
-impl Display for OperationKind {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Addition => f.write_str("+"),
-            Self::Multiplication => f.write_str("×"),
-        }
-    }
-}
-
 impl OperationKind {
-    pub fn apply(&self, a: u32, b: u32) -> u32 {
+    pub fn apply(&self, a: usize, b: usize) -> fn(usize, usize) -> Option<usize> {
         match self {
-            Self::Addition => a + b,
-            Self::Multiplication => a * b,
+            Self::Addition => move |x, y| Some(x + y),
+            Self::Multiplication => move |x, y| Some(x * y),
         }
     }
     pub(crate) fn write_sign(&self, display: u32, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -80,10 +59,10 @@ impl OperationKind {
 fn test() {
     println!("$$");
     let m = OperationTable::default().with_base(7).with_operation(OperationKind::Addition);
-    println!("{}", m);
+    println!("{}", m.display());
     println!("$$");
     println!("$$");
     let m = OperationTable::default().with_base(7);
-    println!("{}", m);
+    println!("{}", m.display());
     println!("$$");
 }

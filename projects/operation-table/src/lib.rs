@@ -11,4 +11,5 @@ mod builtin;
 
 pub use crate::errors::{Error, Result};
 pub use crate::table::TableDisplay;
+pub use crate::table::standard_alphabet;
 pub use crate::builtin::{OperationKind, OperationTable};
