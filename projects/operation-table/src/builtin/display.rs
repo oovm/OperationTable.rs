@@ -17,18 +17,10 @@ impl OperationTable {
             y_terms.push(y);
         }
         TableDisplay {
-            shared_buffer: "".to_string(),
             sign: Cow::Owned(self.kind.to_string()),
             x_terms,
             y_terms,
-            evaluate: match self.kind {
-                OperationKind::Addition => {
-                    |x, y| Some(x + y)
-                }
-                OperationKind::Multiplication => {
-                    |x, y| Some(x * y)
-                }
-            },
+            evaluate: self.kind.apply(self.hide_upper_triangle),
             display_base: self.base_display as usize,
             alphabet: standard_alphabet,
             show_base: true,

@@ -4,12 +4,12 @@
 #![doc(html_logo_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
 #![doc(html_favicon_url = "https://raw.githubusercontent.com/oovm/shape-rs/dev/projects/images/Trapezohedron.svg")]
 
+mod builtin;
 mod errors;
 mod table;
-mod builtin;
 
-
-pub use crate::errors::{Error, Result};
-pub use crate::table::TableDisplay;
-pub use crate::table::standard_alphabet;
-pub use crate::builtin::{OperationKind, OperationTable};
+pub use crate::{
+    builtin::{OperationKind, OperationTable},
+    errors::{Error, Result},
+    table::{standard_alphabet, Alphabet, Evaluator, TableDisplay},
+};

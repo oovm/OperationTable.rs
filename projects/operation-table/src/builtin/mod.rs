@@ -1,6 +1,8 @@
-use std::borrow::Cow;
-use std::fmt::{Display, Formatter};
 use crate::table::{standard_alphabet, TableDisplay};
+use std::{
+    borrow::Cow,
+    fmt::{Display, Formatter},
+};
 
 mod display;
 
@@ -26,7 +28,6 @@ impl Default for OperationTable {
     }
 }
 
-
 impl OperationTable {
     pub fn with_base(self, base: usize) -> Self {
         Self { base, ..self }
@@ -40,18 +41,11 @@ impl OperationTable {
 }
 
 impl OperationKind {
-    pub fn apply(&self, a: usize, b: usize) -> fn(usize, usize) -> Option<usize> {
+    pub fn apply(&self, hide_upper_triangle: bool) -> Box<dyn Fn(usize, usize) -> Option<usize>> {
         match self {
-            Self::Addition => move |x, y| Some(x + y),
-            Self::Multiplication => move |x, y| Some(x * y),
+            Self::Addition => Box::new(move |x, y| if hide_upper_triangle && x > y { None } else { Some(x + y) }),
+            Self::Multiplication => Box::new(move |x, y| if hide_upper_triangle && x > y { None } else { Some(x * y) }),
         }
-    }
-    pub(crate) fn write_sign(&self, display: u32, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::Addition => f.write_str("+"),
-            Self::Multiplication => f.write_str("×"),
-        }?;
-        f.write_fmt(format_args!("_{{({})}}", display))
     }
 }
 
