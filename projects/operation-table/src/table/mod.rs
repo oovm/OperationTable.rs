@@ -33,28 +33,6 @@ impl Default for TableDisplay {
     }
 }
 
-impl TableDisplay {
-    fn write_number_radix(&self, f: &mut Formatter<'_>, digits_buffer: &mut String, mut number: usize) -> std::fmt::Result {
-        if number == 0 {
-            f.write_str("0")?
-        }
-        else {
-            while number > 0 {
-                let digit = number % self.display_base;
-                number /= self.display_base;
-                match (self.alphabet)(digit) {
-                    Some(c) => digits_buffer.push(c),
-                    None => digits_buffer.push('?'),
-                }
-            }
-            for c in take(digits_buffer).chars().rev() {
-                f.write_char(c)?;
-            }
-        }
-        Ok(())
-    }
-}
-
 pub fn standard_alphabet(index: usize) -> Option<char> {
     if index < 10 {
         Some((index as u8 + b'0') as char)
