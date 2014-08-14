@@ -51,4 +51,7 @@ impl OperationTable {
     pub fn with_min(self, min: usize) -> Self {
         Self { range_min: min, ..self }
     }
+    pub fn with_upper_triangle(self, show: bool) -> Self {
+        Self { hide_upper_triangle: !show, ..self }
+    }
 }

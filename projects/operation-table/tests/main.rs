@@ -33,17 +33,17 @@ fn test_base7() {
 }
 
 #[test]
-fn test_base6() {
+fn test_base12() {
     println!("$$");
-    let m = OperationTable::default().with_base(6).with_operation(OperationKind::Enumerate).with_min(0).with_display(36);
+    let m = OperationTable::default().with_base(12).with_operation(OperationKind::Enumerate).with_min(0).with_display(12);
     println!("{}", m.display());
     println!("$$");
     println!("$$");
-    let m = OperationTable::default().with_display(6).with_operation(OperationKind::Addition).with_min(1).with_base(6);
+    let m = OperationTable::default().with_base(12).with_operation(OperationKind::Addition).with_min(1).with_display(12);
     println!("{}", m.display());
     println!("$$");
     println!("$$");
-    let m = OperationTable::default().with_base(6).with_display(6);
+    let m = OperationTable::default().with_base(12).with_display(12).with_upper_triangle(true);
     println!("{}", m.display());
     println!("$$");
 }
