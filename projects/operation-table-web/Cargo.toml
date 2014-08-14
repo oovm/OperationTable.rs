@@ -1,0 +1,25 @@
+[package]
+name = "operation-preview"
+publish = false
+version = "0.2.0"
+authors = ["Aster <192607617@qq.com>"]
+description = "Render math with KaTeX in Yew!"
+repository = "https://github.com/GalAster/yew-katex"
+readme = "readme.md"
+license = "MPL-2.0"
+edition = "2018"
+
+[dependencies]
+log = "0.4.17"
+#wasm-logger = "0.2.0"
+dioxus = { version = "0.4.0", features = [] }
+dioxus-web = "0.4.0"
+dioxus-katex = "0.4.0"
+dioxus-logger = "0.4.0"
+
+[dependencies.operation-table]
+version = "*"
+path = "../operation-table"
+
+#[dev-dependencies]
+#macrowind = "0.1.1"

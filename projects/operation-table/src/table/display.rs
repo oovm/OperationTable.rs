@@ -40,14 +40,10 @@ impl Display for TableDisplay {
             f.write_fmt(format_args!("{}&", line))?;
             for (column, i) in self.x_terms.iter().enumerate() {
                 match (self.evaluate)(*line, *i) {
-                    Some(value) => {
-                        self.write_number_radix(f, &mut digits_buffer, value)?;
-                        self.write_split(f, column)?;
-                    }
-                    None => {
-                        self.write_split(f, column)?;
-                    }
+                    Some(value) => self.write_number_radix(f, &mut digits_buffer, value)?,
+                    None => {}
                 }
+                self.write_split(f, column)?;
             }
         }
         f.write_str("\n\\hline\n")?;
@@ -78,12 +74,4 @@ impl TableDisplay {
     fn write_split(&self, f: &mut Formatter<'_>, index: usize) -> std::fmt::Result {
         if self.x_terms.len() != index + 1 { f.write_str("&") } else { f.write_str("\\\\") }
     }
-}
-
-#[test]
-fn test() {
-    println!("$$");
-    let m = TableDisplay::default();
-    println!("{}", m);
-    println!("$$");
 }
