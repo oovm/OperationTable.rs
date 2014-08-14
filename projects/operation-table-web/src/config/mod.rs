@@ -9,12 +9,13 @@ pub struct UseOperationTable {
 }
 
 pub struct TableOptions {
+    uppercase: bool,
     config: OperationTable,
 }
 
 impl Default for TableOptions {
     fn default() -> Self {
-        Self { config: OperationTable::default() }
+        Self { uppercase: true, config: OperationTable::default() }
     }
 }
 
@@ -39,38 +40,6 @@ impl UseOperationTable {
 }
 
 impl UseOperationTable {
-    /// Get the current value of the ellipsis option.
-    pub fn skip_one(&self) -> bool {
-        self.table.borrow().config.skip_one
-    }
-    /// Add a toggle button for the ellipsis option.
-    pub fn skip_one_toggle(&self) -> LazyNodes {
-        let click = move |e: FormEvent| {
-            let mut v = self.table.borrow_mut();
-            match e.value.as_str() {
-                "true" => v.config.skip_one = true,
-                "false" => v.config.skip_one = false,
-                _ => {}
-            }
-            self.needs_update();
-        };
-        let v = self.table.borrow().config.skip_one;
-        rsx!(
-            label {
-                class: "cursor-pointer label",
-                span {
-                    class: "label-text",
-                    "Ellipsis"
-                }
-                input {
-                    r#type: "checkbox",
-                    class: "toggle",
-                    checked: "{v}",
-                    oninput: click
-                }
-            }
-        )
-    }
     pub fn show_base(&self) -> bool {
         self.table.borrow().config.show_base
     }
@@ -91,7 +60,38 @@ impl UseOperationTable {
                 class: "cursor-pointer label",
                 span {
                     class: "label-text",
-                    "Colored"
+                    "Show display base"
+                }
+                input {
+                    r#type: "checkbox",
+                    class: "toggle",
+                    checked: "{v}",
+                    oninput: click
+                }
+            }
+        )
+    }
+    pub fn uppercase(&self) -> bool {
+        self.table.borrow().config.show_base
+    }
+    /// Get the current value of the color option.
+    pub fn uppercase_toggle(&self) -> LazyNodes {
+        let click = move |e: FormEvent| {
+            let mut v = self.table.borrow_mut();
+            match e.value.as_str() {
+                "true" => v.config.show_base = true,
+                "false" => v.config.show_base = false,
+                _ => {}
+            }
+            self.needs_update();
+        };
+        let v = self.table.borrow().config.show_base;
+        rsx!(
+            label {
+                class: "cursor-pointer label",
+                span {
+                    class: "label-text",
+                    "Show display base"
                 }
                 input {
                     r#type: "checkbox",
@@ -125,7 +125,7 @@ impl UseOperationTable {
                 class: "label flex",
                 span {
                     class: "mr-auto label-text",
-                    "Expands"
+                    "Base"
                 }
                 input {
                     class: "range range-sm",
@@ -133,6 +133,42 @@ impl UseOperationTable {
                     r#type: "range",
                     min: "2",
                     max: "36",
+                    step: "1",
+                    value: "{v}",
+                    onchange: click,
+                }
+            }
+        )
+    }
+    pub fn base_display(&self) -> usize {
+        self.table.borrow().config.base_display
+    }
+    pub fn base_display_slider(&self) -> LazyNodes {
+        let click = move |e: FormEvent| {
+            match usize::from_str(e.value.as_str()) {
+                Ok(v) => {
+                    self.table.borrow_mut().config.base_display = v;
+                }
+                Err(e) => {
+                    log::warn!("range {:?}", e);
+                }
+            }
+            self.needs_update();
+        };
+        let v = self.table.borrow().config.base_display;
+        rsx!(
+            label {
+                class: "label flex",
+                span {
+                    class: "mr-auto label-text",
+                    "Display base"
+                }
+                input {
+                    class: "range range-sm",
+                    style: "width: 200px;",
+                    r#type: "range",
+                    min: "2",
+                    max: "60",
                     step: "1",
                     value: "{v}",
                     onchange: click,

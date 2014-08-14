@@ -12,13 +12,14 @@ pub struct OperationTable {
     pub kind: OperationKind,
     pub base: usize,
     pub show_base: bool,
-    pub base_display: u32,
-    pub skip_one: bool,
+    pub base_display: usize,
+    pub range_min: usize,
     pub hide_upper_triangle: bool,
 }
 
 #[derive(Copy, Clone, Debug, Default)]
 pub enum OperationKind {
+    Enumerate,
     Addition,
     #[default]
     Multiplication,
@@ -31,7 +32,7 @@ impl Default for OperationTable {
             base: 10,
             show_base: true,
             base_display: 10,
-            skip_one: true,
+            range_min: 2,
             hide_upper_triangle: true,
         }
     }
@@ -41,10 +42,13 @@ impl OperationTable {
     pub fn with_base(self, base: usize) -> Self {
         Self { base, ..self }
     }
-    pub fn with_display(self, base: u32) -> Self {
+    pub fn with_display(self, base: usize) -> Self {
         Self { base_display: base, ..self }
     }
     pub fn with_operation(self, kind: OperationKind) -> Self {
         Self { kind, ..self }
+    }
+    pub fn with_min(self, min: usize) -> Self {
+        Self { range_min: min, ..self }
     }
 }

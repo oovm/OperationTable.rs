@@ -28,7 +28,7 @@ pub fn AppWeb(cx: Scope) -> Element {
                 hr {
                     class: "h-2 bg-transparent border-0"
                 }
-                BMSEditor {}
+                TableEditor {}
             }
         }
     })
